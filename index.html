@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Birthday My jaan!</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: linear-gradient(to bottom, #ff9a9e, #fad0c4);
+      font-family: 'Arial', sans-serif;
+    }
+
+    .container {
+      text-align: center;
+      color: #fff;
+    }
+
+    h1 {
+      font-size: 3rem;
+      margin: 0;
+    }
+
+    p {
+      font-size: 1.5rem;
+      margin: 0 0 20px 0;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 1.2rem;
+      color: #fff;
+      background-color: #ff6f61;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #ff3b2f;
+    }
+
+    .confetti {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Happy Birthday My jaan!</h1>
+    <p>Click the button to celebrate!</p>
+    <button onclick="celebrate()">Celebrate</button>
+  </div>
+
+  <canvas class="confetti" id="confetti"></canvas>
+
+  <script>
+    function celebrate() {
+      const canvas = document.getElementById('confetti');
+      const ctx = canvas.getContext('2d');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      const confetti = [];
+      const colors = ['#fce18a', '#ff726d', '#f4306d', '#b83e3e', '#ffe8d2'];
+
+      function createConfettiPiece() {
+        return {
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height - canvas.height,
+          size: Math.random() * 10 + 5,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          speed: Math.random() * 3 + 1,
+          angle: Math.random() * 360
+        };
+      }
+
+      for (let i = 0; i < 300; i++) {
+        confetti.push(createConfettiPiece());
+      }
+
+      function drawConfetti() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        confetti.forEach(p => {
+          ctx.fillStyle = p.color;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+          ctx.fill();
+        });
+      }
+
+      function updateConfetti() {
+        confetti.forEach(p => {
+          p.y += p.speed;
+          p.x += Math.sin(p.angle) * 2;
+
+          if (p.y > canvas.height) {
+            p.y = -p.size;
+            p.x = Math.random() * canvas.width;
+          }
+        });
+      }
+
+      function animate() {
+        drawConfetti();
+        updateConfetti();
+        requestAnimationFrame(animate);
+      }
+
+      animate();
+    }
+  </script>
+</body>
+</html>
